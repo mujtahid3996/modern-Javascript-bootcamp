@@ -1,4 +1,5 @@
 // Prototypal Inheritance
+// myPerson --> Person.prototype --> Object.prototype --> null
 
 class Person {
     constructor(firstName, lastName, age, likes = []) {
@@ -16,38 +17,43 @@ class Person {
 
         return bio
     }
-    setName(fullName) {
+    set fullName(fullName) {
         const names = fullName.split(' ')
         this.firstName = names[0]
         this.lastName = names[1]
     }
-}
-class Student extends Person{
-    constructor(firstName, lastName, age, grades,likes = [])
-    {
-        super(firstName, lastName, age, likes = [])
-        this.grades=grades
-    }
-    getBio(){
-        if(this.grades>70)
-        {
-            return `${this.firstName} is passing`
-        }
-        else
-        {
-            return `${this.firstName} is failing`
-        }
-    }
-    updateGrade(amount){
-        this.grades=this.grades+amount
+    get fullName() {
+        return `${this.firstName} ${this.lastName}`
     }
 }
 
-const me = new Student('Andrew', 'Mead', 27, 40,['Teaching', 'Biking'])
-me.setName('Alexis Turner')
-console.log(me.getBio())
-me.updateGrade(45)
-console.log(me.getBio())
+class Employee extends Person {
+    constructor(firstName, lastName, age, position, likes) {
+        super(firstName, lastName, age, likes)
+        this.position = position
+    }
+    getBio() {
+        return `${this.fullName} is a ${this.position}.`
+    }
+    getYearsLeft() {
+        return 65 - this.age
+    }
+}
 
-const person2 = new Person('Clancey', 'Turner', 51)
-console.log(person2.getBio())
+class Student extends Person {
+    constructor(firstName, lastName, age, grade, likes) {
+        super(firstName, lastName, age, likes)
+        this.grade = grade
+    }
+    updateGrade(change) {
+        this.grade += change
+    }
+    getBio() {
+        const status = this.grade >= 70 ? 'passing' : 'failing'
+        return `${this.firstName} is ${status} the class.`
+    }
+}
+
+const me = new Employee('Andrew', 'Mead', 27, 'Teacher', [])
+me.fullName = 'Clancey Turner'
+console.log(me.getBio())
