@@ -13,23 +13,28 @@ window.addEventListener('keypress', (e) => {
 })
 
 getPuzzle((error, puzzle) => {
+    //this is getpuzzle with fetch
     if (error) {
         console.log(`Error: ${error}`)
     } else {
         console.log(puzzle)
     }
+    
 })
 
-getCountry('USA',(error,countryname)=>{
-    if(error){
-        console.log('Something went wrong:'+error)
-
-    }
-    else
-    {
-        console.log(countryname)
-    }
+getCountry('USA').then((country)=>{
+    console.log(country.name)
+}).catch(error =>{
+    console.log(error)
 })
+
+// getLocation().then((ip) =>{
+//     console.log(ip.city)
+//     console.log(ip.country)
+//     console.log(ip.region)
+// }).catch((error) => {
+//     console.log(error)
+// })
 
 // Making an HTTP request
 

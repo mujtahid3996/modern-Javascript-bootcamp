@@ -14,22 +14,34 @@ const getPuzzle = (callback) => {
     request.send()
 }
 
-const getCountry =(countrycode,callback)=>{
-    
- const countryRequest = new XMLHttpRequest()
+const getCountry =(countrycode) => 
+    {
+       return fetch(`https://restcountries.eu/rest/v2/alpha/${countrycode}`)
+        .then( response => {
+            if(response.status === 200)
+            {
+                return response.json()
+            }
+            else{
+                throw new Error('unable to fetch from Api')
+            }
+        })
 
- countryRequest.addEventListener('readystatechange', (e) => {
-     if (e.target.readyState === 4 && e.target.status === 200) {
-         const country = JSON.parse(e.target.responseText)
-         callback(undefined,country.name)
-        
-     } else if (e.target.readyStatet === 4) {
-         console.log('Unable to fetch data')
-         callback('error',undefined)
-     }
- })
+    }
 
- countryRequest.open('GET', `
- https://restcountries.eu/rest/v2/alpha/${countrycode}`)
- countryRequest.send()
-}
+const getLocation =() =>
+    new Promise((resolve,reject) => {
+        const ipreqest= new XMLHttpRequest()
+        ipreqest.addEventListener('readystatechange',(e) => {
+            if(e.target.readyState === 4 && e.target.status === 200){
+                const ip = JSON.parse(e.target.responseText)
+                resolve(ip)
+            }
+            else if(e.target.readyState === 4) {
+                reject('error')
+            }
+        })
+
+        ipreqest.open('GET',`https://ipinfo.io/json?token=264f91917867b4`)
+        ipreqest.send()
+    })
