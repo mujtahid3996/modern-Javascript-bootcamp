@@ -1,47 +1,36 @@
-const getPuzzle = (callback) => {
-    const request = new XMLHttpRequest()
-
-    request.addEventListener('readystatechange', (e) => {
-        if (e.target.readyState === 4 && e.target.status === 200) {
-            const data = JSON.parse(e.target.responseText)
-            callback(undefined, data.puzzle)
-        } else if (e.target.readyState === 4) {
-            callback('An error has taken place', undefined)
-        }
-    })
-
-    request.open('GET', 'http://puzzle.mead.io/puzzle?wordCount=3')
-    request.send()
+const getPuzzle = async (wordCount) => {
+    const response = await fetch(`http://puzzle.mead.io/puzzle?wordCount=${wordCount}`)
+    
+    if (response.status === 200) {
+        const data = await response.json()
+        return data.puzzle
+    } else {
+        throw new Error('Unable to get puzzle')
+    }
 }
 
-const getCountry =(countrycode) => 
-    {
-       return fetch(`https://restcountries.eu/rest/v2/alpha/${countrycode}`)
-        .then( response => {
-            if(response.status === 200)
-            {
-                return response.json()
-            }
-            else{
-                throw new Error('unable to fetch from Api')
-            }
-        })
+const getCurrentCountry = async () => {
+    const location = await getLocation()
+    return getCountry(location.country)
+}
 
+const getCountry = async (countryCode) => {
+    const response = await fetch('http://restcountries.eu/rest/v2/all')
+
+    if (response.status === 200) {
+        const data = await response.json()
+        return data.find((country) => country.alpha2Code === countryCode)
+    } else {
+        throw new Error('Unable to fetch the country')
     }
+}
 
-const getLocation =() =>
-    new Promise((resolve,reject) => {
-        const ipreqest= new XMLHttpRequest()
-        ipreqest.addEventListener('readystatechange',(e) => {
-            if(e.target.readyState === 4 && e.target.status === 200){
-                const ip = JSON.parse(e.target.responseText)
-                resolve(ip)
-            }
-            else if(e.target.readyState === 4) {
-                reject('error')
-            }
-        })
+const getLocation = async () => {
+    const response = await fetch('http://ipinfo.io/json?token=1a11bd55cc8f9c')
 
-        ipreqest.open('GET',`https://ipinfo.io/json?token=264f91917867b4`)
-        ipreqest.send()
-    })
+    if (response.status === 200) {
+        return response.json()
+    } else {
+        throw new Error('Unable to get the current location')
+    }
+}
