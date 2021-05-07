@@ -6,12 +6,13 @@ window.addEventListener('load',()=>{
     let temparature=document.querySelector('.degree-section')
     let temparaturespan=document.querySelector('.degree-section span')
     let long;
+    
+    
     let lat;
     if(navigator.geolocation){
         navigator.geolocation.getCurrentPosition((position)=>{
             long = position.coords.longitude;
             lat =position.coords.latitude;
-
             const api = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&units=imperial&appid=8fa8aaaf802f6074bd4782382ca73393`
             fetch(api).then((response) =>{
                 return response.json()
