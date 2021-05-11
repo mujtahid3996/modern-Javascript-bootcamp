@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Recipe App</title>
+        <link href="images/favicon.png" rel="icon">
+        <link href="Styles/style.css" rel="stylesheet">
+    </head>
+    <body>
+        <div class="header">
+            <div class="container">
+                <h1 class="header__title">Recipe App</h1>
+            </div>
+        </div>
+        <div class="actions">
+            <div class="actions__container actions__container--spaced">
+                <a href="/index.html">Home</a>
+                <span id="last-edited"></span>
+            </div>
+        </div>
+        <div class="container">
+            <input id="Recipe-title" class="title-input" placeholder="Recipe title">
+            <textarea id="Recipe-body" class="body-input" placeholder="Enter recipe text"></textarea>
+            <div class="body-input"> </div>
+            <button id="remove-recipe" class="button button--secondary">Remove recipe</button>
+        </div>
+        <script src="/scripts/edit-bundle.js"></script>
+    </body>
+</html>

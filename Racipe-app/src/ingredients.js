@@ -1,0 +1,4 @@
+let ingredient = {
+    name:'',
+    currentlyhave:''
+}
